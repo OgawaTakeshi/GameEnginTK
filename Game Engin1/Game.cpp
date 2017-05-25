@@ -38,6 +38,11 @@ void Game::Initialize(HWND window, int width, int height)
 	m_timer.SetTargetElapsedSeconds(1.0 / 60);
 	*/
 
+	//カメラの生成
+	m_Camera = std::make_unique<FollowCamera>((float)m_outputHeight, m_outputWidth);
+
+	Obj3d::Initialize(m_Camera.get(),m_d3dDevice.)
+
 	m_batch = std::make_unique<PrimitiveBatch<VertexPositionNormal>>(m_d3dContext.Get());
 
 	m_effect = std::make_unique<BasicEffect>(m_d3dDevice.Get());
@@ -84,11 +89,20 @@ void Game::Initialize(HWND window, int width, int height)
 		*m_factory
 	);
 
+
+
 	m_AngleBall = 0.0f;
 
 	keyboard = std::make_unique<Keyboard>();
 
 	tank_angle = 0.0f;
+
+
+	
+	//カメラにキーボードをセット
+	m_Camera->SetKeyboard(keyboard.get());
+
+	
 }
 
 // Executes the basic game loop.
@@ -196,6 +210,7 @@ void Game::Update(DX::StepTimer const& timer)
 		tank_pos += moveV;
 	}
 
+
 	{// 自機のワールド行列を計算
 	 // 回転行列
 		Matrix rotmat = Matrix::CreateRotationY(tank_angle);
@@ -203,6 +218,19 @@ void Game::Update(DX::StepTimer const& timer)
 		Matrix transmat = Matrix::CreateTranslation(tank_pos);
 		// ワールド行列を合成
 		tank_world = rotmat * transmat;
+
+
+	}
+
+
+
+	{//通常カメラ
+		m_Camera->SetTargetPos(tank_pos);
+		m_Camera->SetTargetAngle(tank_angle);
+		//基底クラスの更新
+		m_Camera->Update();
+		m_view = m_Camera->GetView();
+		m_proj = m_Camera->Getproj();
 	}
 }
 
@@ -243,8 +271,22 @@ void Game::Render()
 	//m_view = Matrix::CreateLookAt(Vector3(0, 2.f, 2.f),
 	//	Vector3(0,0,0), Vector3(0,1,0));
 	// デバッグカメラからビュー行列を取得
-	m_view = m_debugCamera->GetCameraMatrix();
-	// 射影行列を生成
+/*	
+	//カメラの位置
+	Vector3 eyepos(0, 0.1f, 0.25f);	//視点
+	Vector3 refpos(0, 0, 0);		//参照点
+	Vector3 upvec(0, 1.f, 0);		//上方向ベクトル
+	upvec.Normalize();
+	//ビュー行列
+	Matrix viemat = Matrix::CreateLookAt(eyepos, refpos, upvec);
+*/
+//	m_view = m_debugCamera->GetCameraMatrix();
+	//float fovY = XMConvertToRadians(60.0f);
+	//float aspect = (float)m_outputHeight / m_outputWidth;	//縦横
+	//float nearClip = 0.1f;	//前
+	//float farClip = 100.0f; //画面奥
+	//Matrix projmat = Matrix::CreatePerspectiveFieldOfView(fovY, aspect, nearClip, farClip);
+		// 射影行列を生成
 	m_proj = Matrix::CreatePerspectiveFieldOfView(XM_PI / 4.f,
 		float(m_outputWidth) / float(m_outputHeight), 0.1f, 500.f);
 
@@ -283,6 +325,8 @@ void Game::Render()
 		m_view,
 		m_proj);
 
+
+	
 	m_batch->Begin();
 
 	m_batch->DrawIndexed(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST, indices, 6, vertices, 4);
