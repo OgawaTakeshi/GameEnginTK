@@ -1,57 +1,49 @@
-//------------------------------
-//カメラを制御するCPP
-//------------------------------
-
-#include"Camera.h"
+#include "Camera.h"
 
 using namespace DirectX;
-using namespace SimpleMath;
+using namespace DirectX::SimpleMath;
 
 /// <summary>
 /// コンストラクタ
 /// </summary>
-/// <param name="value">何かの数値</param>
-/// <returns>計算結果</returns>
-Camera::Camera(int m_outputWidth,int  m_outputHeight)
+Camera::Camera(int width, int height)
 {
-	//メンバ変数の初期化
-	 m_eyepos=Vector3(0, 0, 5.0f);	//視点
-	 m_refpos = Vector3(0, 0, 0);		//参照点
-	 m_upvec = Vector3(0, 1, 0);		//上方向ベクトル
-	// m_upvec.Normalize();
+	// メンバ変数の初期化
+	m_eyepos = Vector3(0, 0, 5.0f);
+	m_refpos = Vector3(0, 0, 0);
+	m_upvec = Vector3(0, 1, 0);
 
 	m_fovY = XMConvertToRadians(60.0f);
-	m_aspect = (float)m_outputHeight / m_outputWidth;	//縦横
-	m_nearClip = 0.1f;	//前
-	m_farClip = 1000.0f; //画面奥
+	m_aspect = (float)width / height;
+	m_nearclip = 0.1f;
+	m_farclip = 1000.0f;
 
-	//ビュー行列の生成
+	// ビュー行列を生成
 	m_view = Matrix::CreateLookAt(m_eyepos, m_refpos, m_upvec);
-	//射影行列の生成
-	m_proj = Matrix::CreatePerspectiveFieldOfView(m_fovY, m_aspect, m_nearClip, m_farClip);
+	// 射影行列を生成
+	m_proj = Matrix::CreatePerspectiveFieldOfView(
+		m_fovY, m_aspect, m_nearclip, m_farclip);
 }
 
 Camera::~Camera()
 {
-
 }
 
 void Camera::Update()
 {
-
-	//ビュー行列の生成
+	// ビュー行列を生成
 	m_view = Matrix::CreateLookAt(m_eyepos, m_refpos, m_upvec);
-	//射影行列の生成
-	m_proj = Matrix::CreatePerspectiveFieldOfView(m_fovY, m_aspect, m_nearClip, m_farClip);
+	// 射影行列を生成
+	m_proj = Matrix::CreatePerspectiveFieldOfView(
+		m_fovY, m_aspect, m_nearclip, m_farclip);
 }
 
-const DirectX::SimpleMath::Matrix Camera::GetView()
+const DirectX::SimpleMath::Matrix& Camera::GetView()
 {
-	
 	return m_view;
 }
 
-const DirectX::SimpleMath::Matrix Camera::Getproj()
+const DirectX::SimpleMath::Matrix& Camera::GetProj()
 {
 	return m_proj;
 }
@@ -66,7 +58,7 @@ void Camera::SetRefPos(const DirectX::SimpleMath::Vector3& refpos)
 	m_refpos = refpos;
 }
 
-void Camera::SetUpvec(const DirectX::SimpleMath::Vector3& upvec)
+void Camera::SetUpVec(const DirectX::SimpleMath::Vector3& upvec)
 {
 	m_upvec = upvec;
 }
@@ -81,12 +73,12 @@ void Camera::SetAspect(float aspect)
 	m_aspect = aspect;
 }
 
-void Camera::SetNearClip(float nearClip)
+void Camera::SetNearClip(float nearclip)
 {
-	m_nearClip = nearClip;
+	m_nearclip = nearclip;
 }
 
-void Camera::SetFarClip(float farClip)
+void Camera::SetFarClip(float farclip)
 {
-	m_farClip = farClip;
+	m_farclip = farclip;
 }

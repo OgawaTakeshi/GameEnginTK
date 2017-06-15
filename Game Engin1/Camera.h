@@ -1,53 +1,65 @@
-//------------------------------
-//カメラを制御する.h
-//------------------------------
-
+//------------------------
+// カメラを制御するクラス
+//------------------------
 #pragma once
 
 #include <d3d11.h>
-#include <simplemath.h>
+#include <SimpleMath.h>
+
 class Camera
 {
 public:
-			//メンバ関数を置くところ
+	Camera(int width, int height);
 
-	Camera(int wirth,int m_outputHeight);
-	virtual~Camera();
+	virtual ~Camera();
 
-	//更新
+	// 更新
 	virtual void Update();
 
-	//ビュー行列を取得
-	const DirectX::SimpleMath::Matrix GetView();
+	// ビュー行列を取得
+	const DirectX::SimpleMath::Matrix& GetView();
 
-	//射影行列を取得
-	const DirectX::SimpleMath::Matrix Getproj();
+	// 射影行列を取得
+	const DirectX::SimpleMath::Matrix& GetProj();
 
-	//視点座標をゲット
+	// 視点座標をセット
 	void SetEyePos(const DirectX::SimpleMath::Vector3& eyepos);
+
+	// 参照点座標をセット
 	void SetRefPos(const DirectX::SimpleMath::Vector3& refpos);
-	void SetUpvec(const DirectX::SimpleMath::Vector3& upvec);
 
+	// 上方向ベクトルをセット
+	void SetUpVec(const DirectX::SimpleMath::Vector3& upvec);
+
+	// 垂直方向視野角をセット
 	void SetFovY(float fovY);
+
+	// アスペクト比をセット
 	void SetAspect(float aspect);
-	void SetNearClip(float nearClip);
-	void SetFarClip(float farClip);
+
+	// ニアクリップをセット
+	void SetNearClip(float nearclip);
+
+	// ファークリップをセット
+	void SetFarClip(float farclip);
+
 protected:
-	//メンバ変数を置くところ	
-	//ビュー行列
-
-	DirectX::SimpleMath::Vector3 m_eyepos;	//視点
-	DirectX::SimpleMath::Vector3 m_refpos;		//参照点（どこを見るのか）
-	DirectX::SimpleMath::Vector3 m_upvec;		//上方向ベクトル
-
-	DirectX::SimpleMath::Matrix m_view;	//視点
-	
-
-	//射影行列
-	float m_fovY;		//垂直方向
+	// ビュー行列
+	DirectX::SimpleMath::Matrix m_view;
+	// カメラの位置（視点座標）
+	DirectX::SimpleMath::Vector3 m_eyepos;
+	// どこのみるのか（注視点/参照点)
+	DirectX::SimpleMath::Vector3 m_refpos;
+	// 上方向ベクトル
+	DirectX::SimpleMath::Vector3 m_upvec;
+	// 射影行列
+	DirectX::SimpleMath::Matrix m_proj;
+	// 垂直方向視野角
+	float m_fovY;
+	// 画面横幅と縦幅の比率（アスペクト比）
 	float m_aspect;
-	float m_nearClip;	//前
-	float m_farClip; //画面奥
-DirectX::SimpleMath::Matrix m_proj;		//参照点
-
+	// 手前の表示限界距離
+	float m_nearclip;
+	// 奥の表示限界距離
+	float m_farclip;
 };

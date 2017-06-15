@@ -14,13 +14,28 @@
 #include <Keyboard.h>
 #include "DebugCamera.h"
 #include "FollowCamera.h"
+
 #include "Obj3d.h"
+#include "Player.h"
+#include "Enemy.h"
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game
 {
 public:
+
+	enum PLAYER_PARTS
+	{
+		PLAYER_PARTS_BASE,
+		PLAYER_PARTS_TAIHOU,
+		PLAYER_PARTS_HOUDAI,
+		PLAYER_PARTS_TATE,
+
+		PLAYER_PARTS_NUM
+	};
+
+
 
 	Game();
 
@@ -86,30 +101,34 @@ private:
 	// エフェクトファクトリ
 	std::unique_ptr<DirectX::EffectFactory> m_factory;
 	// モデル
-	std::unique_ptr<DirectX::Model> m_modelSkydome;
-	std::unique_ptr<DirectX::Model> m_modelGround;
-	std::unique_ptr<DirectX::Model> m_modelBall;
-	std::unique_ptr<DirectX::Model> m_modelHead;
+	
 
-	// 球のワールド行列
-	DirectX::SimpleMath::Matrix m_worldBall[20];
-	// 角度
-	float m_AngleBall;
+	Obj3d m_objSkydome;
+	Obj3d m_modelGround;
+
+//	std::unique_ptr<DirectX::Model> m_modelHead;
+
+
+
 	// キーボード
 	std::unique_ptr<DirectX::Keyboard> keyboard;
-	// 自機の座標
-	DirectX::SimpleMath::Vector3 tank_pos;
-	// 自機の回転角
-	float tank_angle;
-	// 自機のワールド行列
-	DirectX::SimpleMath::Matrix tank_world;
-	DirectX::SimpleMath::Matrix tank_world2;
 
-	Obj3d m_ObjPlayer1;
-	Obj3d m_ObjPlayer2;//子パーツ
+	// 自機の座標
+//	DirectX::SimpleMath::Vector3 tank_pos;
+	// 自機の回転角
+	//float tank_angle;
+
+//	std::vector<Obj3d> m_ObjPlayer;
 
 	//std::unique_ptr<Obj3d> m_Objplayre;
 	//カメラ
 	std::unique_ptr<FollowCamera> m_Camera;
 
+	// プレイヤー
+	std::unique_ptr<Player> m_Player;
+
+	// 敵
+	std::vector<std::unique_ptr<Enemy>> m_Enemies;
+	// 角度
+	float m_AngleBall;
 };

@@ -1,13 +1,13 @@
+/// <summary>
+/// 自機に追従するカメラクラス
+/// </summary>
 #pragma once
-//
-//カメラを追従するカメラクラス
-//
 
 #include "Camera.h"
-#include<Keyboard.h>
+#include <Keyboard.h>
+#include "Player.h"
 
-
-class FollowCamera:public Camera
+class FollowCamera : public Camera
 {
 public:
 	// カメラと自機の距離
@@ -17,26 +17,33 @@ public:
 	// 毎フレーム更新
 	void Update() override;
 
+	// TPSカメラの初期化
+	void InitializeTPS();
+
 	// 追従対象座標をセット
 	void SetTargetPos(const DirectX::SimpleMath::Vector3& targetpos);
 
 	// 追従対象角度をセット
 	void SetTargetAngle(float targetAngle);
 
-	void SetKeyboard(DirectX::Keyboard* m_keyboard);
+	// キーボードをセット
+	void SetKeyboard(DirectX::Keyboard* keyboard);
 
-	// TPSカメラの初期化
-	void InitializeTPS();
+	// プレイヤーをセット
+	void SetPlayer(Player* player) { m_Player = player; }
 
-private:
-
-	DirectX::SimpleMath::Vector3 m_targetpos;
+protected:
+	// 追従対象の座標
+	DirectX::SimpleMath::Vector3 m_targetPos;
+	// 追従対象の角度
 	float m_targetAngle;
-	//キーボード
+	// キーボード
 	DirectX::Keyboard* m_keyboard;
-	//キーボードトラッカー
-	DirectX::Keyboard::KeyboardStateTracker m_keyboaredTracker;
-	//FPS ture 
+	// キーボードトラッカー
+	DirectX::Keyboard::KeyboardStateTracker m_keyboardTracker;
+	// FPSカメラフラグ
 	bool isFPS;
+	// プレイヤー
+	Player* m_Player;
 };
 

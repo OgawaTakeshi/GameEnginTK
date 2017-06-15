@@ -5,8 +5,10 @@
 #include "pch.h"
 #include "Game.h"
 
-using namespace DirectX;
+#include "Collision.h"
 
+using namespace DirectX;
+using namespace DirectX::SimpleMath;
 namespace
 {
 	std::unique_ptr<Game> g_game;
@@ -24,6 +26,26 @@ extern "C"
 // Entry point
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine, _In_ int nCmdShow)
 {
+	//Sphere sphereA;
+	//sphereA.Center = Vector3(1, 0, 0);
+	//sphereA.Radius = 2;
+
+	//Sphere sphereB;
+	//sphereB.Center = Vector3(-1, 0, 0);
+	//sphereB.Radius = 2;
+
+	//bool hit = CheckSphere(sphereA, sphereB);
+
+	//if (hit)
+	//{
+	//	OutputDebugString(L"ìñÇΩÇ¡ÇΩÅI");
+	//}
+	//else
+	//{
+	//	OutputDebugString(L"ìñÇΩÇ¡ÇƒÇ»Ç¢");
+	//}
+
+
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
