@@ -5,7 +5,7 @@
 #include <Keyboard.h>
 #include <vector>
 #include "Obj3d.h"
-
+#include"CollisionNode.h"
 
 // 自機
 class Player
@@ -49,6 +49,8 @@ public:
 	// ワールド行列を取得
 	const DirectX::SimpleMath::Matrix& GetLocalWorld();
 
+	const SphereNode& GetCollisionNodeBullet() { return m_CollisionNodeBullet; }
+
 protected:
 	// メンバ変数
 	// ロボットの構成パーツ
@@ -60,4 +62,7 @@ protected:
 	DirectX::SimpleMath::Vector3 m_BulletVel;
 
 	bool m_FireFlag;
+
+	//当たり判定
+	SphereNode m_CollisionNodeBullet;
 };

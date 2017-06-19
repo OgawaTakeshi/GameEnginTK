@@ -63,7 +63,16 @@ void Enemy::Initialize()
 	m_Timer = 0;
 	m_DistAngle = 0;
 
-	
+	//武器の当たり判定
+	{
+		m_CollisionNodeBullet.Initialize();
+		//武器パーツに埋め込む
+		m_CollisionNodeBullet.SetParent(&m_ObjEnemy[0]);
+		//
+		m_CollisionNodeBullet.SetTrans(Vector3(0, 0, -10));
+		//当たり判定の半径
+		m_CollisionNodeBullet.SetLocalRadius(1.0f);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -126,6 +135,7 @@ void Enemy::Update()
 
 	// 行列更新
 	Calc();
+
 }
 
 void Enemy::Calc()
@@ -136,6 +146,7 @@ void Enemy::Calc()
 	{
 		it->Update();
 	}
+	m_CollisionNodeBullet.Update();
 }
 
 void Enemy::Render()
@@ -147,7 +158,7 @@ void Enemy::Render()
 	{
 		it->Draw();
 	}
-
+	m_CollisionNodeBullet.Draw();
 }
 
 const DirectX::SimpleMath::Vector3& Enemy::GetTrans()

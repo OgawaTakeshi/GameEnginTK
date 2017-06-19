@@ -6,6 +6,7 @@
 #include <Keyboard.h>
 #include <vector>
 #include "Obj3d.h"
+#include "CollisionNode.h"
 
 class Enemy{
 
@@ -59,4 +60,6 @@ protected:
 
 	std::vector<Obj3d> m_ObjEnemy;
 
+	//“–‚½‚è”»’è
+	SphereNode m_CollisionNodeBullet;
 };

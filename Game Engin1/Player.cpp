@@ -10,6 +10,8 @@ Player::Player(DirectX::Keyboard* keyboard)
 
 
 	Initialize();
+
+
 }
 
 Player::~Player()
@@ -51,6 +53,17 @@ void Player::Initialize()
 	m_ObjPlayer[PLAYER_PARTS_BASE].SetTranslation(
 		Vector3(0, 0, 0));
 
+
+	//武器の当たり判定
+	{
+		m_CollisionNodeBullet.Initialize();
+		//武器パーツに埋め込む
+		m_CollisionNodeBullet.SetParent(&m_ObjPlayer[PLAYER_PARTS_TAIHOU]);
+		//
+		m_CollisionNodeBullet.SetTrans(Vector3(0, 0, -1.0f));
+		//当たり判定の半径
+		m_CollisionNodeBullet.SetLocalRadius(0.1);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -111,8 +124,7 @@ void Player::Update()
 	}
 
 
-	// 行列更新
-	Calc();
+
 
 	//スペースキーで発射
 	if (m_KeyboardTracker.IsKeyPressed(Keyboard::Keys::Space))
@@ -139,7 +151,9 @@ void Player::Update()
 
 
 	}
-	
+		// 行列更新
+	Calc();
+	m_CollisionNodeBullet.Initialize();
 }
 
 //-----------------------------------------------------------------------------
@@ -153,6 +167,8 @@ void Player::Calc()
 	{
 		it->Update();
 	}
+
+	m_CollisionNodeBullet.Update();
 }
 
 //-----------------------------------------------------------------------------
@@ -166,6 +182,7 @@ void Player::Draw()
 	{
 		it->Draw();
 	}
+	m_CollisionNodeBullet.Draw();
 }
 
 void Player::FireBullet()

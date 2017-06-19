@@ -131,7 +131,7 @@ void Game::Update(DX::StepTimer const& timer)
 	// ゲームの毎フレーム処理
 
 	// デバッグカメラの更新
-//	m_debugCamera->Update();
+	m_debugCamera->Update();
 
 	// 角度を加算
 	m_AngleBall += 1.0f;
