@@ -14,6 +14,12 @@
     <Filter Include="Enemy">
       <UniqueIdentifier>{e2b73381-c704-4233-8aa6-995c3f9de3f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Collsion">
+      <UniqueIdentifier>{7b26afdf-8647-4da2-ac85-b38c3f9a7eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LandShape">
+      <UniqueIdentifier>{806ebe51-a783-49e8-897a-ba7c3065a1b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
@@ -35,8 +41,19 @@
     <ClInclude Include="Enemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="CollisionNode.h" />
+    <ClInclude Include="ModelEffect.h" />
+    <ClInclude Include="Collision.h">
+      <Filter>Collsion</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionNode.h">
+      <Filter>Collsion</Filter>
+    </ClInclude>
+    <ClInclude Include="LandShape.h">
+      <Filter>LandShape</Filter>
+    </ClInclude>
+    <ClInclude Include="LandShapeData.h">
+      <Filter>LandShape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -58,8 +75,19 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="CollisionNode.cpp" />
+    <ClCompile Include="ModelEffect.cpp" />
+    <ClCompile Include="CollisionNode.cpp">
+      <Filter>Collsion</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Collsion</Filter>
+    </ClCompile>
+    <ClCompile Include="LandShape.cpp">
+      <Filter>LandShape</Filter>
+    </ClCompile>
+    <ClCompile Include="LandShapeData.cpp">
+      <Filter>LandShape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -100,6 +128,9 @@
       <Filter>Assets</Filter>
     </MeshContentTask>
     <MeshContentTask Include="Assets\SphereNode.FBX">
+      <Filter>Assets</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\effect.FBX">
       <Filter>Assets</Filter>
     </MeshContentTask>
   </ItemGroup>

@@ -45,7 +45,7 @@ public:
 
 	void Update();
 
-
+	void Calc();
 	void Draw();
 
 	// setter
@@ -59,6 +59,8 @@ public:
 	void SetRotationQ(const DirectX::SimpleMath::Quaternion& rotation) { m_rotationQ = rotation; m_UseQuternion = true; }
 	// 親行列用
 	void SetObjParent(Obj3d* pObjParent) { m_pObjParent = pObjParent; }
+
+	void SetLocalWorld(const DirectX::SimpleMath::Matrix& world) { m_SetWorld = world; }
 	// getter
 	// スケーリング用
 	const DirectX::SimpleMath::Vector3& GetScale() { return m_scale; }
@@ -67,7 +69,7 @@ public:
 	// 平行移動用
 	const DirectX::SimpleMath::Vector3& GetTranslation() { return m_translation; }
 	// ワールド行列を取得
-	const DirectX::SimpleMath::Matrix& GetWorld() { return m_world; }
+	const DirectX::SimpleMath::Matrix& GetWorld() { return m_Getworld; }
 	// 親行列用
 	Obj3d* GetObjParent() { return m_pObjParent; }
 
@@ -89,7 +91,10 @@ private:
 	// 平行移動
 	DirectX::SimpleMath::Vector3 m_translation;
 	// ワールド行列
-	DirectX::SimpleMath::Matrix m_world;
+	DirectX::SimpleMath::Matrix m_Getworld;
+
+	// ワールド行列
+	DirectX::SimpleMath::Matrix m_SetWorld;
 	// 親となる３Ｄオブジェクトのクラスのポインタ
 	Obj3d* m_pObjParent;
 };

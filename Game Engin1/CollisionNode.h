@@ -12,6 +12,12 @@
 class CollisionNode
 {
 public:
+	static bool GetDebugVisible() { return m_GetDebugVisible; };
+	static void SetDebugVisible(bool Visible) { m_GetDebugVisible = Visible; };
+protected:
+	//デバッグ表示ON
+	static bool m_GetDebugVisible;
+public:
 	//初期化
 	virtual void Initialize()=0;
 	//毎フレーム更新
@@ -22,6 +28,8 @@ public:
 	void SetParent(Obj3d* parent);
 
 	void SetTrans(const DirectX::SimpleMath::Vector3& trans) { m_trans = trans; };
+
+
 protected:
 	//デバック表示オブジェクト
 	Obj3d m_obj;

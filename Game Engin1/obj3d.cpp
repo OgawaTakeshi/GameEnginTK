@@ -76,13 +76,45 @@ void Obj3d::Update()
 	// 平行移動行列
 	Matrix transmat = Matrix::CreateTranslation(m_translation);
 	// ワールド行列を合成
-	m_world = scalemat * rotmat * transmat;
+	m_Getworld = scalemat * rotmat * transmat;
 	// 親の行列をかける
 	if (m_pObjParent)
 	{
-		m_world *= m_pObjParent->GetWorld();
+		m_Getworld *= m_pObjParent->GetWorld();
 	}
 
+}
+void Obj3d::Calc()
+{
+	Matrix scalem;
+	Matrix rotm;
+	Matrix transm;
+
+	scalem = Matrix::CreateScale(m_scale);
+
+	if (m_UseQuternion)
+	{
+		rotm = Matrix::CreateFromQuaternion(m_RotQ);
+	}
+	else
+	{
+		rotm = Matrix::CreateFromYawPitchRoll(m_Rot.y, m_Rot.x, m_Rot.z);
+	}
+
+	transm = Matrix::CreateTranslation(m_translation);
+
+	// ワールド行列をSRTの順に合成
+	m_Getworld = Matrix::Identity;
+	m_Getworld *= scalem;
+	m_Getworld *= rotm;
+	m_Getworld *= transm;
+
+	// 親行列があれば
+	if (m_pObjParent)
+	{
+		// 親行列を掛ける
+		m_Getworld = m_Getworld * m_pObjParent->GetWorld();
+	}
 }
 
 void Obj3d::Draw()
@@ -92,8 +124,9 @@ void Obj3d::Draw()
 	{
 		m_model->Draw(m_d3dContext.Get(),
 			*m_states,
-			m_world,
+			m_Getworld,
 			m_pCamera->GetView(),
 			m_pCamera->GetProj());
+
 	}
 }

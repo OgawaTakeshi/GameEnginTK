@@ -65,13 +65,13 @@ void Enemy::Initialize()
 
 	//•Ší‚Ì“–‚½‚è”»’è
 	{
-		m_CollisionNodeBullet.Initialize();
+		m_CollisionNodeBody.Initialize();
 		//•Šíƒp[ƒc‚É–„‚ßž‚Þ
-		m_CollisionNodeBullet.SetParent(&m_ObjEnemy[0]);
+		m_CollisionNodeBody.SetParent(&m_ObjEnemy[0]);
 		//
-		m_CollisionNodeBullet.SetTrans(Vector3(0, 0, -10));
+		m_CollisionNodeBody.SetTrans(Vector3(0, 0, -0));
 		//“–‚½‚è”»’è‚Ì”¼Œa
-		m_CollisionNodeBullet.SetLocalRadius(1.0f);
+		m_CollisionNodeBody.SetLocalRadius(1.0f);
 	}
 }
 
@@ -146,7 +146,7 @@ void Enemy::Calc()
 	{
 		it->Update();
 	}
-	m_CollisionNodeBullet.Update();
+	m_CollisionNodeBody.Update();
 }
 
 void Enemy::Render()
@@ -158,7 +158,7 @@ void Enemy::Render()
 	{
 		it->Draw();
 	}
-	m_CollisionNodeBullet.Draw();
+	m_CollisionNodeBody.Draw();
 }
 
 const DirectX::SimpleMath::Vector3& Enemy::GetTrans()

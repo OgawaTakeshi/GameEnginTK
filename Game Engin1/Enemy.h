@@ -46,6 +46,7 @@ public:
 	// ƒ[ƒ‹ƒhs—ñ‚ğæ“¾
 	const DirectX::SimpleMath::Matrix& GetLocalWorld();
 
+	const SphereNode& GetCollisionNodeBody() { return m_CollisionNodeBody; }
 
 protected:
 
@@ -61,5 +62,5 @@ protected:
 	std::vector<Obj3d> m_ObjEnemy;
 
 	//“–‚½‚è”»’è
-	SphereNode m_CollisionNodeBullet;
+	SphereNode m_CollisionNodeBody;
 };

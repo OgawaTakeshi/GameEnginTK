@@ -60,7 +60,7 @@ void Player::Initialize()
 		//武器パーツに埋め込む
 		m_CollisionNodeBullet.SetParent(&m_ObjPlayer[PLAYER_PARTS_TAIHOU]);
 		//
-		m_CollisionNodeBullet.SetTrans(Vector3(0, 0, -1.0f));
+		m_CollisionNodeBullet.SetTrans(Vector3(0, 0, -0));
 		//当たり判定の半径
 		m_CollisionNodeBullet.SetLocalRadius(0.1);
 	}
@@ -90,6 +90,7 @@ void Player::Update()
 		float angle = m_ObjPlayer[0].GetRotation().y;
 		m_ObjPlayer[0].SetRotation(
 			Vector3(0, angle - 0.03f, 0));
+		
 	}
 
 	// Wキーを押している間
@@ -209,7 +210,7 @@ void Player::FireBullet()
 	m_ObjPlayer[PLAYER_PARTS_TAIHOU].SetTranslation(translation);
 
 	// 弾の速度を設定
-	m_BulletVel = Vector3(0, 0, -0.1f);
+	m_BulletVel = Vector3(0, 0, -0.5f);
 	// 弾の向きに合わせて進行方向を回転
 	m_BulletVel = Vector3::Transform(m_BulletVel, rotation);
 

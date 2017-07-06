@@ -4,7 +4,7 @@
 
 #include "pch.h"
 #include "Game.h"
-
+#include "ModelEffect.h"
 
 extern void ExitGame();
 
@@ -53,6 +53,13 @@ void Game::Initialize(HWND window, int width, int height)
 		m_Camera.get(),
 		m_d3dDevice,
 		m_d3dContext);
+	//地形の初期化に必要な設定
+	LandShapeCommonDef lscDef;
+	lscDef.pDevice = m_d3dDevice.Get();
+	lscDef.pDeviceContext = m_d3dContext.Get();
+	lscDef.pCamera = m_Camera.get();
+	//地形の共通初期化
+	LandShape::InitializeCommon(lscDef);
 
 	//テクスチャ関係
 	m_batch = std::make_unique<PrimitiveBatch<VertexPositionNormal>>(m_d3dContext.Get());
@@ -82,8 +89,9 @@ void Game::Initialize(HWND window, int width, int height)
 	m_factory->SetDirectory(L"Resources");
 	// モデルの読み込み
 	m_objSkydome.LoadModel(L"Resources/Skydome.cmo");
-
-	m_modelGround.LoadModel(L"Resources/ground.cmo");
+	//地形の読み込み（LAND,FBX）
+	m_LandShape.Initialize(L"ground", L"ground");
+	//m_modelGround.LoadModel(L"Resources/ground.cmo");
 
 	
 	//m_modelHead = Model::CreateFromCMO(
@@ -131,7 +139,7 @@ void Game::Update(DX::StepTimer const& timer)
 	// ゲームの毎フレーム処理
 
 	// デバッグカメラの更新
-	m_debugCamera->Update();
+//	m_debugCamera->Update();
 
 	// 角度を加算
 	m_AngleBall += 1.0f;
@@ -186,6 +194,52 @@ void Game::Update(DX::StepTimer const& timer)
 		(*it)->Update();
 	}
 
+	
+
+	{// 弾丸と敵のあたり判定
+	 // 弾丸の判定球取得
+		const Sphere& bulletSphere = m_Player->GetCollisionNodeBullet();
+
+		// 敵の数だけ処理する
+		for (std::vector<std::unique_ptr<Enemy>>::iterator it = m_Enemies.begin();
+			it != m_Enemies.end();
+			)
+		{
+			Enemy* enemy = it->get();
+
+			// 敵の判定球取得
+			const Sphere& enemySphere = enemy->GetCollisionNodeBody();
+			Vector3 inter;
+			// 二つの球が当たっていたら
+			if (CheckSphere(bulletSphere, enemySphere,&inter))
+			{
+				m_Player->ResetBullet();
+
+				ModelEffectManager::getInstance()->Entry(
+					L"Resources/effect.cmo",
+					10,
+					inter,	// 座標
+					Vector3(0, 0, 0),	// 速度
+					Vector3(0, 0, 0),	// 加速度
+					Vector3(0, 0, 0),	// 回転角（初期）
+					Vector3(0, 0, 0),	// 回転角（最終）
+					Vector3(0, 0, 0),	// スケール（初期）
+					Vector3(6, 6, 6)	// スケール（最終）
+				);
+
+				// 敵を殺す
+				// eraseした要素の次を指すイテレータを取得
+				it = m_Enemies.erase(it);
+
+				
+			}
+			else
+			{
+				// イテレータを一つ進める
+				it++;
+			}
+		}
+	}
 
 
 	{// 追従カメラ
@@ -196,8 +250,9 @@ void Game::Update(DX::StepTimer const& timer)
 		m_proj = m_Camera->GetProj();
 	}
 
+	ModelEffectManager::getInstance()->Update();
 	m_objSkydome.Update();
-
+	m_LandShape.Update();
 
 }
 
@@ -244,7 +299,8 @@ void Game::Render()
 	// 天球を描画
 	m_objSkydome.Draw();
 	// 地面を描画
-	m_modelGround.Draw();
+	m_LandShape.Draw();
+	//m_modelGround.Draw();
 
 	m_Player->Draw();
 
@@ -255,6 +311,8 @@ void Game::Render()
 	{
 		(*it)->Render();
 	}
+
+	ModelEffectManager::getInstance()->Draw();
 
 	m_batch->Begin();
 
